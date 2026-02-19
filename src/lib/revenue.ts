@@ -27,7 +27,7 @@ export class RevenueService {
 
     // Get total views already counted in earnings
     const totalCountedViews = video.earnings.reduce(
-      (sum, earning) => sum + earning.viewCount,
+      (sum, earning) => sum + earning.views,
       0
     )
 
@@ -49,7 +49,7 @@ export class RevenueService {
         userId: video.userId,
         videoId: video.id,
         amount,
-        viewCount: viewsToCount,
+        views: viewsToCount,
       },
     })
 
@@ -79,7 +79,7 @@ export class RevenueService {
       where: { userId },
       _sum: {
         amount: true,
-        viewCount: true,
+        views: true,
       },
     })
 
@@ -102,7 +102,7 @@ export class RevenueService {
         videoId: earning.videoId,
         videoTitle: video?.title,
         totalViews: video?.views || 0,
-        countedViews: earning._sum.viewCount || 0,
+        countedViews: earning._sum.views || 0,
         totalEarnings: earning._sum.amount || 0,
       }
     })
@@ -126,7 +126,7 @@ export class RevenueService {
 
     for (const video of videos) {
       const countedViews = video.earnings.reduce(
-        (sum, earning) => sum + earning.viewCount,
+        (sum, earning) => sum + earning.views,
         0
       )
       const remainingViews = video.views - countedViews
