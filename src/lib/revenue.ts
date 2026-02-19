@@ -86,7 +86,7 @@ export class RevenueService {
     const videos = await prisma.video.findMany({
       where: {
         id: {
-          in: earnings.map((e) => e.videoId),
+          in: earnings.map((e) => e.videoId).filter((id): id is string => id !== null),
         },
       },
       select: {
