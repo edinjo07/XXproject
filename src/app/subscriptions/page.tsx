@@ -4,6 +4,8 @@ import { redirect } from 'next/navigation'
 import { VideoGrid } from '@/components/VideoGrid'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 async function getSubscriptionFeed(userId: string) {
   const videos = await prisma.video.findMany({
     where: {

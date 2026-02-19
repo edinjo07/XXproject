@@ -3,6 +3,8 @@ import { VideoGrid } from '@/components/VideoGrid'
 import { CategorySlider } from '@/components/CategorySlider'
 import { BillboardAd, LeaderboardAd, ResponsiveAd } from '@/components/AdBanner'
 
+export const dynamic = 'force-dynamic'
+
 async function getFeaturedVideos() {
   return await prisma.video.findMany({
     where: {

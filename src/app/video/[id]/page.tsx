@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic'
 import { bunnyStream } from '@/lib/bunny-stream'
 import { VideoPlayer } from '@/components/VideoPlayer'
 import { VideoInfo } from '@/components/VideoInfo'

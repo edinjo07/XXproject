@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
+
+export const dynamic = 'force-dynamic'
 import { VideoGrid } from '@/components/VideoGrid'
 import { CategorySlider } from '@/components/CategorySlider'
 import { LeaderboardAd, ResponsiveAd } from '@/components/AdBanner'
