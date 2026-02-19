@@ -74,9 +74,10 @@ async function getRelatedVideos(videoId: string, userId: string) {
 export default async function VideoPage({
   params,
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const video = await getVideo(params.id)
+  const { id } = await params
+  const video = await getVideo(id)
 
   if (!video) {
     notFound()

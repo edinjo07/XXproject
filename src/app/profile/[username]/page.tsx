@@ -40,9 +40,10 @@ async function getProfile(username: string) {
 export default async function ProfilePage({
   params,
 }: {
-  params: { username: string }
+  params: Promise<{ username: string }>
 }) {
-  const profile = await getProfile(params.username)
+  const { username } = await params
+  const profile = await getProfile(username)
 
   if (!profile) {
     notFound()

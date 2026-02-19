@@ -56,11 +56,12 @@ async function getAllCategories() {
 export default async function CategoryPage({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params
   const [category, videos, categories] = await Promise.all([
-    getCategory(params.slug),
-    getCategory(params.slug).then(cat => cat ? getCategoryVideos(cat.id) : []),
+    getCategory(slug),
+    getCategory(slug).then(cat => cat ? getCategoryVideos(cat.id) : []),
     getAllCategories(),
   ])
 
@@ -71,7 +72,7 @@ export default async function CategoryPage({
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
       {/* Category Slider */}
-      <CategorySlider categories={categories} currentSlug={params.slug} />
+      <CategorySlider categories={categories} currentSlug={slug} />
 
       {/* Top Banner Ad */}
       <div className="hidden md:flex justify-center my-6 sm:my-8">
