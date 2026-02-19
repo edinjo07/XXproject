@@ -14,10 +14,10 @@ function getClientIp(request: Request): string {
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const videoId = params.id
+    const { id: videoId } = await params
     const ipAddress = getClientIp(request)
     const userAgent = request.headers.get('user-agent') || 'unknown'
 

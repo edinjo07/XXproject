@@ -6,10 +6,10 @@ import { commentSchema } from '@/lib/validation'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const videoId = params.id
+    const { id: videoId } = await params
 
     const comments = await prisma.comment.findMany({
       where: {
@@ -56,7 +56,7 @@ export async function GET(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -66,7 +66,7 @@ export async function POST(
     }
 
     const userId = (session.user as any).id
-    const videoId = params.id
+    const { id: videoId } = await params
     const body = await request.json()
 
     const validation = commentSchema.safeParse({ ...body, videoId })

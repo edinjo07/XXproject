@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,7 +15,7 @@ export async function POST(
     }
 
     const { reason } = await req.json()
-    const userId = params.id
+    const { id: userId } = await params
     const adminId = (session.user as any)?.id
 
     // Check if user exists and is not admin

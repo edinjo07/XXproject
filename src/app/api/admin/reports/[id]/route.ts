@@ -10,7 +10,7 @@ const reportActionSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -21,7 +21,7 @@ export async function POST(
 
     const body = await request.json()
     const { action } = reportActionSchema.parse(body)
-    const reportId = params.id
+    const { id: reportId } = await params
     const adminId = (session.user as any).id
 
     const report = await prisma.report.update({

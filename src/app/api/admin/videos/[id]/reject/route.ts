@@ -10,7 +10,7 @@ const rejectSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -21,7 +21,7 @@ export async function POST(
 
     const body = await request.json()
     const { reason } = rejectSchema.parse(body)
-    const videoId = params.id
+    const { id: videoId } = await params
     const adminId = (session.user as any)?.id
 
     const video = await prisma.video.update({

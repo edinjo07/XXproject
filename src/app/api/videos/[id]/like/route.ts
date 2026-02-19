@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,7 +15,7 @@ export async function POST(
     }
 
     const userId = (session.user as any).id
-    const videoId = params.id
+    const { id: videoId } = await params
 
     // Check if video exists
     const video = await prisma.video.findUnique({
@@ -71,7 +71,7 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -81,7 +81,7 @@ export async function DELETE(
     }
 
     const userId = (session.user as any).id
-    const videoId = params.id
+    const { id: videoId } = await params
 
     // Delete like
     await prisma.like.deleteMany({
@@ -111,10 +111,10 @@ export async function DELETE(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const videoId = params.id
+    const { id: videoId } = await params
     const session = await getServerSession(authOptions)
     const userId = session?.user ? (session.user as any).id : null
 

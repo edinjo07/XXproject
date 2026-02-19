@@ -11,7 +11,7 @@ const reportSchema = z.object({
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -21,7 +21,7 @@ export async function POST(
     }
 
     const userId = (session.user as any).id
-    const videoId = params.id
+    const { id: videoId } = await params
 
     const body = await request.json()
     const { reason, details } = reportSchema.parse(body)

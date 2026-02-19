@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -15,7 +15,7 @@ export async function POST(
     }
 
     const subscriberId = (session.user as any).id
-    const username = params.username
+    const { username } = await params
 
     // Find the creator to subscribe to
     const creator = await prisma.user.findUnique({
@@ -79,7 +79,7 @@ export async function POST(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -89,7 +89,7 @@ export async function DELETE(
     }
 
     const subscriberId = (session.user as any).id
-    const username = params.username
+    const { username } = await params
 
     // Find the creator
     const creator = await prisma.user.findUnique({
@@ -128,10 +128,10 @@ export async function DELETE(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
   try {
-    const username = params.username
+    const { username } = await params
     const session = await getServerSession(authOptions)
     const userId = session?.user ? (session.user as any).id : null
 

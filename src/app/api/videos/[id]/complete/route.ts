@@ -6,7 +6,7 @@ import { bunnyStream } from '@/lib/bunny-stream'
 
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,7 +16,7 @@ export async function POST(
     }
 
     const userId = (session.user as any).id
-    const videoId = params.id
+    const { id: videoId } = await params
 
     // Get video from database
     const video = await prisma.video.findUnique({
