@@ -14,7 +14,7 @@ const RATE_LIMIT_API_STRICT = 30 // stricter limit for sensitive API routes
  * Rate limiting middleware
  */
 function checkRateLimit(request: NextRequest, maxRequests: number): NextResponse | null {
-  const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
   const now = Date.now()
   
   // Clean up expired entries
