@@ -23,7 +23,7 @@ interface RateLimitConfig {
  */
 export function rateLimit(config: RateLimitConfig) {
   return async (request: NextRequest): Promise<NextResponse | null> => {
-    const ip = request.ip || request.headers.get('x-forwarded-for') || 'unknown'
+    const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() || request.headers.get('x-real-ip') || 'unknown'
     const now = Date.now()
     
     // Clean up expired entries
