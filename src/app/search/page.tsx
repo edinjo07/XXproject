@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import { VideoGrid } from '@/components/VideoGrid'
 import { FaSearch } from 'react-icons/fa'
 
-export default function SearchPage() {
+function SearchContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState(searchParams.get('q') || '')
@@ -147,5 +147,13 @@ export default function SearchPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8"><div className="text-center py-12 text-textSecondary">Loading...</div></div>}>
+      <SearchContent />
+    </Suspense>
   )
 }
